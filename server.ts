@@ -31,11 +31,14 @@ const sharedPlans = new Map<string, SharedPlan>();
 
 // Lazy init of Gemini AI
 let aiClient: GoogleGenAI | null = null;
-function getAI(): GoogleGenAI {
+function getAI(customKey?: string): GoogleGenAI {
+  if (customKey && customKey.trim().length > 0) {
+    return new GoogleGenAI({ apiKey: customKey.trim() });
+  }
   if (!aiClient) {
     const key = process.env.GEMINI_API_KEY;
     if (!key) {
-      throw new Error("GEMINI_API_KEY environment variable is required but missing.");
+      throw new Error("A variável de ambiente GEMINI_API_KEY está ausente. Por favor, insira uma Chave de API Provisória nas configurações para prosseguir.");
     }
     aiClient = new GoogleGenAI({ apiKey: key });
   }
@@ -53,6 +56,7 @@ app.get("/api/health", (req, res) => {
 app.post("/api/generate-plan", async (req, res) => {
   try {
     const { course, subject, workload, focus, calendarInfo } = req.body;
+    const customKey = req.headers["x-gemini-api-key"] as string | undefined;
     
     if (!course || !subject) {
       res.status(400).json({ error: "Curso e Unidade Curricular são obrigatórios." });
@@ -100,7 +104,7 @@ JSON Schema esperado:
 
 Gere um cronograma que faça sentido para cobrir aproximadamente ${workload || 80} horas de curso (dividindo em aulas de 3 a 4 horas cada, totalizando entre 15 e 25 aulas). Garanta que os conteúdos sejam específicos e práticos do ensino técnico brasileiro.`;
 
-    const ai = getAI();
+    const ai = getAI(customKey);
     const response = await ai.models.generateContent({
       model: "gemini-2.5-flash",
       contents: prompt,
@@ -126,6 +130,7 @@ Gere um cronograma que faça sentido para cobrir aproximadamente ${workload || 8
 app.post("/api/extract-students", async (req, res) => {
   try {
     const { rawText, fileName } = req.body;
+    const customKey = req.headers["x-gemini-api-key"] as string | undefined;
     if (!rawText) {
       res.status(400).json({ error: "Texto do documento não fornecido." });
       return;
@@ -154,7 +159,7 @@ JSON Schema esperado:
   ]
 }`;
 
-    const ai = getAI();
+    const ai = getAI(customKey);
     const response = await ai.models.generateContent({
       model: "gemini-2.5-flash",
       contents: prompt,

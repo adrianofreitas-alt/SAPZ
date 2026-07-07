@@ -5,7 +5,6 @@ import {defineConfig} from 'vite';
 
 export default defineConfig(() => {
   return {
-    base: '/SAPZ/', // <--- ADICIONA ESTA LINHA EXATAMENTE AQUI
     plugins: [react(), tailwindcss()],
     resolve: {
       alias: {

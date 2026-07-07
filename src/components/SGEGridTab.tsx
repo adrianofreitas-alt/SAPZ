@@ -116,7 +116,10 @@ export default function SGEGridTab({ activeClass, onUpdateStudents, isOnline }: 
     try {
       const response = await fetch("/api/extract-students", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          "x-gemini-api-key": localStorage.getItem("SIGA_SYLLABUS_TEMPORARY_GEMINI_KEY") || "",
+        },
         body: JSON.stringify({
           rawText,
           fileName: "documento_pasted.txt",

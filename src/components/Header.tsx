@@ -1,6 +1,6 @@
 import React from "react";
 import { ClassGroup } from "../types";
-import { Wifi, WifiOff, RefreshCw, Key, Shield, User, PlusCircle, BookOpen } from "lucide-react";
+import { Wifi, WifiOff, RefreshCw, Key, Shield, User, PlusCircle, BookOpen, Sparkles } from "lucide-react";
 
 interface HeaderProps {
   classes: ClassGroup[];
@@ -29,6 +29,15 @@ export default function Header({
 }: HeaderProps) {
   const activeClass = classes.find((c) => c.id === activeClassId);
 
+  const [tempGeminiKey, setTempGeminiKey] = React.useState(() => {
+    return localStorage.getItem("SIGA_SYLLABUS_TEMPORARY_GEMINI_KEY") || "";
+  });
+
+  const handleGeminiKeyChange = (val: string) => {
+    setTempGeminiKey(val);
+    localStorage.setItem("SIGA_SYLLABUS_TEMPORARY_GEMINI_KEY", val);
+  };
+
   return (
     <header className="bg-white border-b border-slate-200 sticky top-0 z-40 no-print shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -55,6 +64,22 @@ export default function Header({
           {/* Quick Stats & Offline Controls */}
           <div className="flex flex-wrap items-center gap-3 md:gap-4">
             
+            {/* Temporary Gemini API Key Input */}
+            <div className="flex items-center gap-2 bg-slate-50 border border-slate-200 px-3 py-1.5 rounded-lg text-xs font-medium">
+              <Sparkles className="w-3.5 h-3.5 text-red-600" />
+              <span className="text-slate-600 hidden sm:inline">API Gemini:</span>
+              <div className="flex items-center gap-1.5 bg-white border border-slate-200 rounded px-1.5 py-0.5 shadow-xs">
+                <input
+                  type="password"
+                  value={tempGeminiKey}
+                  onChange={(e) => handleGeminiKeyChange(e.target.value)}
+                  placeholder="Chave Provisória..."
+                  className="w-20 sm:w-28 text-slate-700 focus:outline-hidden font-mono text-[10px]"
+                  title="Chave de API do Gemini temporária para rodar geração inteligente (não exposta publicamente)"
+                />
+              </div>
+            </div>
+
             {/* End-to-End Encryption Controller */}
             <div className="flex items-center gap-2 bg-slate-50 border border-slate-200 px-3 py-1.5 rounded-lg text-xs font-medium">
               <Shield className="w-3.5 h-3.5 text-emerald-600" />

@@ -69,7 +69,10 @@ export default function SyllabusTab({ activeClass, onUpdatePlan, isOnline }: Syl
     try {
       const response = await fetch("/api/generate-plan", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          "x-gemini-api-key": localStorage.getItem("SIGA_SYLLABUS_TEMPORARY_GEMINI_KEY") || "",
+        },
         body: JSON.stringify({
           course: activeClass.course,
           subject: activeClass.subject,
