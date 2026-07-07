@@ -1,4 +1,5 @@
-name: NodeJS with Webpack
+YAML
+name: CI - Build Projeto
 
 on:
   push:
@@ -10,22 +11,16 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        node-version: [18.x, 20.x, 22.x]
-
     steps:
-    - uses: actions/checkout@v4
+    - name: Checkout do codigo
+      uses: actions/checkout@v4
 
-    - name: Use Node.js ${{ matrix.node-version }}
+    - name: Configurar Node.js
       uses: actions/setup-node@v4
       with:
-        node-version: ${{ matrix.node-version }}
+        node-version: 20
 
-    - name: Build
-      run: |
-        npm install
-       - name: Build
+    - name: Instalar Dependencias e Buildar
       run: |
         npm install
         npm run build
