@@ -1,6 +1,6 @@
 {
-  "name": "",
-  "description": "",
+  "name": "Plano de Ensino por Competências",
+  "description": "Sistema para elaboração de planos de ensino técnico, cronogramas por competências, extração de alunos por IA e gestão de turmas com suporte offline.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }
