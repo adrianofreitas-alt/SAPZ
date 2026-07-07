@@ -1,26 +1,25 @@
-YAML
-name: CI - Build Projeto
+name: CI
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "principal" ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "principal" ]
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout do codigo
-      uses: actions/checkout@v4
+      - name: Checkout codigo
+        uses: actions/checkout@v4
 
-    - name: Configurar Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: 20
+      - name: Configurar Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
 
-    - name: Instalar Dependencias e Buildar
-      run: |
-        npm install
-        npm run build
+      - name: Instalar e Buildar
+        run: |
+          npm install
+          npm run build
