@@ -2,9 +2,9 @@ name: CI
 
 on:
   push:
-    branches: [ "principal" ]
+    branches: [ "main" ]
   pull_request:
-    branches: [ "principal" ]
+    branches: [ "main" ]
 
 jobs:
   build:
@@ -23,3 +23,4 @@ jobs:
         run: |
           npm install
           npm run build
+     
